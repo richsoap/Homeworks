@@ -1,21 +1,21 @@
 # B站爬取计划
 ## 爬取内容
 ### 播放页
-[x] 番剧ID(id)
-[x] 番剧名称(title)
-[x] 播放量(views)
-[x] 弹幕数目(danmakus)
-[x] 追番量(follow)
-[x] 硬币数(coins)
-[ ] 分享量(share)
-[x] 评分(score)
-[x] 评分人数(score_count)
-[x] 时间戳(timestamp)
+- [x] 番剧ID(id)
+- [x] 番剧名称(title)
+- [x] 播放量(views)
+- [x] 弹幕数目(danmakus)
+- [x] 追番量(follow)
+- [x] 硬币数(coins)
+- [ ] 分享量(share)
+- [x] 评分(score)
+- [x] 评分人数(score_count)
+- [x] 时间戳(timestamp)
 ### 详情页
-[x] Tag(tag)
-[x] (长短)点评数量(long_review_count/short_review_count)
-[x] 番剧状态[完结/连载](finish)
-[x] 集数(ep)
+- [x] Tag(tag)
+- [x] (长短)点评数量(long_review_count/short_review_count)
+- [x] 番剧状态[完结/连载](finish)
+- [x] 集数(ep)
 ## 数据获取
 ### 播放页
 1. 遍历(40w), 不好
