@@ -16,16 +16,14 @@
 - [x] (长短)点评数量(long_review_count/short_review_count): int
 - [x] 番剧状态(finish): 0为尚未开播，1为连载，2为完结
 - [x] 集数(ep): int
-## 数据获取
-### 播放页链接获取
-1. 遍历40w番剧链接������
-2. 利用索引页的API找到番剧的ID������
+## 数据获取方式
+#### 播放页链接获取
+- 利用索引页的API找到番剧的ID
 #### 播放页可获取的信息
 - mediaInfo: 播放量(views), 弹幕数(danmakus), 追番量(favorites), 转发量(share), 番剧名(title)
 - rating: 评分(score), 评分人数(count)
 - 详情页的链接
-#### 详情页
-#### 可获取的信息
+#### 详情页可获取的信息
 - media-tag: 有很多个，都是该番的Tag
 - clearfix: 长评和短评
 - index_show: 全xxx话/更新至第xxx话
