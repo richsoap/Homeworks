@@ -37,3 +37,15 @@
 2. 代码鲁棒性不太行，偶尔会因为获取不到内容而崩溃，再运行一次即可
 3. 未开播的番的评分等信息使用-1表示
 4. 部分港澳台专有番会被404
+5. B站的所有网页都是JS渲染出来的，所以需要先安装chrome，并使用headless模式获取网页源码
+## 脚本说明
+### getList.py
+- 使用索引页的API按照每页20个的速度获取所有正版番剧的播放页信息，共获取152页
+- 结果存在data的rawlist.txt中
+### extractList.py
+- 将rawlist.txt中的链接提取出来，放在extractedlist.txt中
+### spider.py
+- 使用extractedlist.txt中的数据进行爬取，并将结果存在bilibili\_bangumi\_<timestamp>.csv中
+- 提供一个参数选择从extractedlist.txt的第几行开始爬取
+### cleanprocess.sh
+- 清理因为爬取失败而没有关闭的chrome进程
