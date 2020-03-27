@@ -26,26 +26,41 @@ vector<vector<int>> split(int v, int n) {
   return result;
 }
 
+vector<int> getPrinumbers(int n) {
+  static vector<int> result;
+  if(result.empty())
+    result.push_back(2);
+  else if(n <= result.back())
+    return result;
+  for(int i = result.back() + 1;i <= n;i ++) {
+    bool isPri = true;
+    for(int j = 0;j < result.size() && isPri;j ++)
+      isPri = i % result[j] != 0;
+    if(isPri)
+      result.push_back(i);
+  }
+  return result;
+}
+
 int goDeep(map<int, int>& record, map<int, int>::iterator maxit, int K) {
   if(K == 0 || maxit->first == 1)
     return maxit->first;
-  //cerr<<"goDeep in "<<maxit->first<<": "<<maxit->second<<endl;
   int result = maxit->first;
-  int i;
-  for(i = 1;i * maxit->second <= K && i < maxit->first;i ++) {
-    auto splitres = split(maxit->first, i + 1);
+  vector<int> prinums = getPrinumbers(K);
+  for(int i = 0;i < prinums.size() && (prinums[i] - 1) * maxit->second <= K && prinums[i] <= maxit->first;i ++) {
+    int dur = prinums[i];
+    auto splitres = split(maxit->first, dur);
     for(auto& line : splitres) {
-      //cerr<<"split "<<line[0]<<" "<<line[1]<<" record: "<<record[line[0]]<<endl;
       record[line[0]] += (line[1] * maxit->second);
     }
-    int temp = goDeep(record, getMaxIt(maxit), K - i * maxit->second);
-    for(auto& line : splitres)
+    int temp = goDeep(record, getMaxIt(maxit), K- (dur - 1) * maxit->second);
+    for(auto& line : splitres) {
       record[line[0]] -= (line[1] * maxit->second);
+    }
     if(temp > result)
       break;
     result = temp;
   }
-  //cerr<<"res: "<<result<<endl;
   return result;
 }
 
@@ -59,9 +74,6 @@ int solve() {
     if(i != 0)
       record[nownum - prenum] ++;
     prenum = nownum;
-  }
-  for(auto& it:record){
-    //cerr<<"rec "<<it.first<<" "<<it.second<<endl;
   }
   auto maxit = record.end();
   return goDeep(record, --maxit, K);
