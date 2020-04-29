@@ -83,7 +83,7 @@ func TestEncodeAndDecoder(t *testing.T) {
 	if itTimes >= 20 {
 		t.Error("Cannot solve a simple problem")
 	}
-	// Try to solve a impossible problem
+	// Try to solve an impossible problem
 	BPSKData = myModem.Modulate(codeResult)
 	for i := 0; i < 500; i++ {
 		BPSKData[i] = -BPSKData[i]
