@@ -1,5 +1,7 @@
 package coder
 
+import "sync"
+
 type Node struct {
 	index int
 	val   float64
@@ -16,11 +18,14 @@ func (n *Node) Get(index int) float64 {
 	return n.val + n.rec.Get(index)
 }
 
-func (n *Node) Update(nodes *[]Node) {
+func (n *Node) Update(nodes *[]Node, wg *sync.WaitGroup) {
 	for _, i := range n.links {
 		n.rec.Put(i, (*nodes)[i].Get(n.index))
 	}
 	n.rec.Merge()
+	if wg != nil {
+		wg.Done()
+	}
 }
 
 func (n *Node) AddLink(index int) {

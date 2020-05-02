@@ -1,8 +1,6 @@
 package modem
 
-type Modem struct{}
-
-func (m *Modem) Modulate(data []int) []float64 {
+func Modulate(data []int) []float64 {
 	n := len(data)
 	result := make([]float64, n, n)
 	for i := 0; i < n; i++ {
@@ -15,7 +13,7 @@ func (m *Modem) Modulate(data []int) []float64 {
 	return result
 }
 
-func (m *Modem) Demodulate(data []float64) []int {
+func Demodulate(data []float64) []int {
 	n := len(data)
 	result := make([]int, n, n)
 	for i := 0; i < n; i++ {

@@ -100,9 +100,8 @@ func TestTrans(t *testing.T) {
 
 func TestGetLine(t *testing.T) {
 	av := make([][]int, 3)
-	sigSrc := source.Source{}
 	for i := range av {
-		av[i] = sigSrc.Create(10000)
+		av[i] = source.Create(10000)
 	}
 	a := MakeBinaryMatrixWithData(av)
 	a = a.Trans()

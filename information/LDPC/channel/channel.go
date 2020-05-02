@@ -27,8 +27,7 @@ func (c *Channel) SetSNR(snrdb float64) {
 }
 
 func (c *Channel) AWGN(data []float64) []float64 {
-	signalPower := Measure(&data)
-	noisePower := signalPower / FromDB(c.SNRDB)
+	noisePower := 1.0 / FromDB(c.SNRDB)
 	noise := Noise(noisePower, len(data))
 	for i := range data {
 		data[i] += noise[i]
@@ -46,21 +45,10 @@ func Measure(data *[]float64) float64 {
 
 func Noise(power float64, length int) []float64 {
 	noise := make([]float64, length, length)
+	sigma := math.Sqrt(power)
+	rand.Seed(time.Now().UnixNano())
 	for i := range noise {
-		noise[i] = NormRand(0, power)
+		noise[i] = rand.NormFloat64() * sigma
 	}
 	return noise
-}
-
-func NormRand(average, sig float64) float64 {
-	s := 0.0
-	v1 := 0.0
-	v2 := 0.0
-	rand.Seed(time.Now().UnixNano())
-	for s >= 1 || s == 0 {
-		v1 = 2*rand.Float64() - 1
-		v2 = 2*rand.Float64() - 1
-		s = v1*v1 + v2*v2
-	}
-	return v1*math.Sqrt(-2*math.Log(s)/s)*math.Sqrt(sig) + average
 }

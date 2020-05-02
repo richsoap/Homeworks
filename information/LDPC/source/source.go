@@ -5,9 +5,7 @@ import (
 	"time"
 )
 
-type Source struct{}
-
-func (s *Source) Create(l int) []int {
+func Create(l int) []int {
 	result := make([]int, l, l)
 	rand.Seed(time.Now().Unix())
 	for i := range result {

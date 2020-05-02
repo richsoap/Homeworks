@@ -24,22 +24,3 @@ func TestDBFunc(t *testing.T) {
 		checkResult(t, "FromDB", dbs[i], FromDB(dbs[i]), raws[i])
 	}
 }
-
-func TestNorFunc(t *testing.T) {
-	data := make([]float64, 100000, 1000000)
-	for i := range data {
-		data[i] = NormRand(0, 1)
-	}
-	average := 0.0
-	for i := range data {
-		average += data[i]
-	}
-	average /= float64(len(data))
-	checkResult(t, "NorFunc Mu", 0, average, 0)
-	sig := 0.0
-	for i := range data {
-		sig += math.Pow(data[i]-average, 2)
-	}
-	sig /= float64(len(data))
-	checkResult(t, "NorFunc Sigma", 0, sig, 1)
-}

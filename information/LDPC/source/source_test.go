@@ -19,7 +19,6 @@ func checkBalance(t *testing.T, data []int) {
 }
 
 func TestSource(t *testing.T) {
-	source := Source{}
-	testResult := source.Create(100000)
+	testResult := Create(100000)
 	checkBalance(t, testResult)
 }

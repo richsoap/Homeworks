@@ -1,6 +1,8 @@
 package coder
 
 import (
+	"sync"
+
 	"github.com/richsoap/ldpc/matrix"
 )
 
@@ -34,26 +36,40 @@ func (d *Decoder) Check(data []int) []int {
 }
 
 func (d *Decoder) Iterate() {
+	var wg sync.WaitGroup
+	wg.Add(d.H)
 	for i := 0; i < d.H; i++ {
-		d.checkNodes[i].Update(&d.valueNodes)
+		go d.checkNodes[i].Update(&d.valueNodes, &wg)
+	}
+	wg.Wait()
+	wg.Add(d.W)
+	for i := 0; i < d.W; i++ {
+		go d.valueNodes[i].Update(&d.checkNodes, &wg)
+	}
+	wg.Wait()
+}
+
+func (d *Decoder) IterateSingle() {
+	for i := 0; i < d.H; i++ {
+		d.checkNodes[i].Update(&d.valueNodes, nil)
 	}
 	for i := 0; i < d.W; i++ {
-		d.valueNodes[i].Update(&d.checkNodes)
+		d.valueNodes[i].Update(&d.checkNodes, nil)
 	}
 }
 
-func (d *Decoder) LoadData(data []float64, checkFunc int) {
+func (d *Decoder) LoadData(data []float64, checkFunc int, param ...float64) {
 	d.checkNodes = make([]Node, d.H, d.H)
 	d.valueNodes = make([]Node, d.W, d.W)
 
 	for index := 0; index < d.H; index++ {
-		d.checkNodes[index] = BuildNode(index, 0, BuildRecorder(checkFunc).(Recoder))
+		d.checkNodes[index] = BuildNode(index, 0, BuildRecorder(checkFunc, param...).(Recoder))
 		for rol := d.HMatrix.Row[index].Head.Next; rol != nil; rol = rol.Next {
 			d.checkNodes[index].AddLink(rol.Val)
 		}
 	}
 	for index := 0; index < d.W; index++ {
-		d.valueNodes[index] = BuildNode(index, data[index], BuildRecorder(ValueSum).(Recoder))
+		d.valueNodes[index] = BuildNode(index, data[index], BuildRecorder(ValueSum, param...).(Recoder))
 		for row := d.HMatrix.Col[index].Head.Next; row != nil; row = row.Next {
 			d.valueNodes[index].AddLink(row.Val)
 		}

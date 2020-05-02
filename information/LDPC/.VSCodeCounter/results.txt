@@ -1,0 +1,51 @@
+Date : 2020-04-30 01:24:27
+Directory : h:\MixWorkspace\Homeworks\information\LDPC
+Total : 18 files,  1037 codes, 6 comments, 131 blanks, all 1174 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Go       |         16 |        987 |          6 |        125 |      1,118 |
+| Python   |          1 |         48 |          0 |          4 |         52 |
+| XML      |          1 |          2 |          0 |          2 |          4 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                               | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                  |         18 |      1,037 |          6 |        131 |      1,174 |
+| channel                                                            |          2 |         96 |          1 |         17 |        114 |
+| coder                                                              |          6 |        401 |          5 |         50 |        456 |
+| doc                                                                |          1 |         48 |          0 |          4 |         52 |
+| matrix                                                             |          3 |        318 |          0 |         34 |        352 |
+| modem                                                              |          2 |         44 |          0 |          8 |         52 |
+| source                                                             |          2 |         36 |          0 |          8 |         44 |
+| util                                                               |          1 |         92 |          0 |          8 |        100 |
++--------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                           | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| h:\MixWorkspace\Homeworks\information\LDPC\channel\channel.go      | Go       |         56 |          1 |         11 |         68 |
+| h:\MixWorkspace\Homeworks\information\LDPC\channel\channel_test.go | Go       |         40 |          0 |          6 |         46 |
+| h:\MixWorkspace\Homeworks\information\LDPC\coder\coder_test.go     | Go       |        103 |          3 |          4 |        110 |
+| h:\MixWorkspace\Homeworks\information\LDPC\coder\decoder.go        | Go       |         61 |          0 |          9 |         70 |
+| h:\MixWorkspace\Homeworks\information\LDPC\coder\encoder.go        | Go       |         47 |          0 |          6 |         53 |
+| h:\MixWorkspace\Homeworks\information\LDPC\coder\node.go           | Go       |         26 |          0 |          7 |         33 |
+| h:\MixWorkspace\Homeworks\information\LDPC\coder\node_test.go      | Go       |         64 |          0 |          5 |         69 |
+| h:\MixWorkspace\Homeworks\information\LDPC\coder\recoder.go        | Go       |        100 |          2 |         19 |        121 |
+| h:\MixWorkspace\Homeworks\information\LDPC\doc\mat_to_txt.py       | Python   |         48 |          0 |          4 |         52 |
+| h:\MixWorkspace\Homeworks\information\LDPC\go.mod                  | XML      |          2 |          0 |          2 |          4 |
+| h:\MixWorkspace\Homeworks\information\LDPC\matrix\list.go          | Go       |         69 |          0 |         11 |         80 |
+| h:\MixWorkspace\Homeworks\information\LDPC\matrix\matrix.go        | Go       |        138 |          0 |         14 |        152 |
+| h:\MixWorkspace\Homeworks\information\LDPC\matrix\matrix_test.go   | Go       |        111 |          0 |          9 |        120 |
+| h:\MixWorkspace\Homeworks\information\LDPC\modem\modem.go          | Go       |         26 |          0 |          4 |         30 |
+| h:\MixWorkspace\Homeworks\information\LDPC\modem\modem_test.go     | Go       |         18 |          0 |          4 |         22 |
+| h:\MixWorkspace\Homeworks\information\LDPC\source\source.go        | Go       |         14 |          0 |          4 |         18 |
+| h:\MixWorkspace\Homeworks\information\LDPC\source\source_test.go   | Go       |         22 |          0 |          4 |         26 |
+| h:\MixWorkspace\Homeworks\information\LDPC\util\util.go            | Go       |         92 |          0 |          8 |        100 |
+| Total                                                              |          |      1,037 |          6 |        131 |      1,174 |
++--------------------------------------------------------------------+----------+------------+------------+------------+------------+
