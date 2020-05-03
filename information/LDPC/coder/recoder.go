@@ -206,13 +206,11 @@ func (r *NorMinRecorder) Sprint() string {
 // 偏置最小和算法(校验节点)
 type OffMinRecorder struct {
 	values map[int]float64
-	mins   []float64
-	sig    float64
 	b      float64
 }
 
 func BuildOffMinRecorder(b float64) *OffMinRecorder {
-	return &OffMinRecorder{make(map[int]float64), make([]float64, 0), 1, b}
+	return &OffMinRecorder{make(map[int]float64), b}
 }
 
 func (r *OffMinRecorder) Put(index int, value float64) {
@@ -235,11 +233,7 @@ func (r *OffMinRecorder) Get(index int) float64 {
 			sig *= -1
 		}
 	}
-	if math.Abs(result) < r.b {
-		return 0
-	} else {
-		return result * sig * r.b
-	}
+	return math.Max(0, result-r.b) * sig
 }
 
 func (r *OffMinRecorder) GetMergedResult() float64 {

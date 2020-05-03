@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/richsoap/ldpc/channel"
 	"github.com/richsoap/ldpc/coder"
@@ -14,14 +15,17 @@ import (
 
 func main() {
 	//a, _ := GetBestAlpha()
-	b, _ := GetBestBeta()
+	//b, _ := GetBestBeta()
+	a := 0.7
+	b := 0.5
 	//RunTest("SP", coder.CheckSumProduct)
 	//RunTest("MS", coder.CheckMinSum)
-	//RunTest("NMS", coder.CheckNormalizedMinSum, a)
+	RunTest("NMS", coder.CheckNormalizedMinSum, a)
 	RunTest("OMS", coder.CheckOffsetMinSum, b)
 }
 
 func RunTest(name string, rec int, param ...float64) {
+	log.Printf("start: %v", time.Now().UnixNano()/1e6)
 	HMatrix, z, err := util.LoadHMatrix("./doc/H_block.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -42,10 +46,6 @@ func RunTest(name string, rec int, param ...float64) {
 		awgnChannel := channel.BuildChannel(noise[i])
 		for errframecount < errframe[i] {
 			framecount++
-			if framecount%100 == 0 {
-				print(framecount)
-				print(errframecount)
-			}
 			sourceData := source.Create(sigLen)
 			codeResult, err := encoder.Encode(sourceData)
 			if err != nil {
@@ -81,7 +81,7 @@ func RunTest(name string, rec int, param ...float64) {
 		}
 		fmt.Fprintf(fileObj, "%v,%v,%v,%v,%v\n", framecount, errframecount, errbitscount, name, noise[i])
 	}
-
+	log.Printf("end: %v", time.Now().UnixNano()/1e6)
 }
 
 func GetBestAlpha() (float64, error) {
@@ -145,7 +145,7 @@ func GetBestBeta() (float64, error) {
 		return 0, err
 	}
 	sigLen := len(HMatrix)
-	noise := 1.5
+	noise := 1.0
 	bestebr := 1e7
 	bestalpha := -1.0
 	encoder := coder.MakeEncoder(HMatrix, len(HMatrix), len(HMatrix[0]), z)
@@ -156,7 +156,7 @@ func GetBestBeta() (float64, error) {
 	if err != nil {
 		return 0, err
 	}
-	fmt.Fprintln(fileObj, "beta, ebr")
+	fmt.Fprintln(fileObj, "beta,ebr")
 	for i := 0.0; i <= 1.0; i += 0.1 {
 		errbits := 0
 		log.Printf("beta: %v", i)
@@ -169,7 +169,7 @@ func GetBestBeta() (float64, error) {
 			for j := range BPSKData {
 				BPSKData[j] = BPSKData[j] * 2 * sigmaSq
 			}
-			decoder.LoadData(BPSKData, coder.CheckNormalizedMinSum, i)
+			decoder.LoadData(BPSKData, coder.CheckOffsetMinSum, i)
 			for j := 0; j < 30; j++ {
 				decoder.Iterate()
 				BitResult := modem.Demodulate(decoder.GetResult())
