@@ -16,16 +16,23 @@ import (
 func main() {
 	//a, _ := GetBestAlpha()
 	//b, _ := GetBestBeta()
+	logFile, err := os.Create("./data/time.log")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	loger := log.New(logFile, "", log.Ldate|log.Ltime|log.Lshortfile)
 	a := 0.7
 	b := 0.5
-	//RunTest("SP", coder.CheckSumProduct)
-	//RunTest("MS", coder.CheckMinSum)
-	RunTest("NMS", coder.CheckNormalizedMinSum, a)
-	RunTest("OMS", coder.CheckOffsetMinSum, b)
+	RunTest("SP", coder.CheckSumProduct, loger)
+	RunTest("MS", coder.CheckMinSum, loger)
+	RunTest("NMS", coder.CheckNormalizedMinSum, loger, a)
+	RunTest("OMS", coder.CheckOffsetMinSum, loger, b)
 }
 
-func RunTest(name string, rec int, param ...float64) {
-	log.Printf("start: %v", time.Now().UnixNano()/1e6)
+func RunTest(name string, rec int, loger *log.Logger, param ...float64) {
+	startTS := time.Now().UnixNano() / 1e6
+	loger.Printf("start: %v", startTS)
 	HMatrix, z, err := util.LoadHMatrix("./doc/H_block.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -38,6 +45,8 @@ func RunTest(name string, rec int, param ...float64) {
 	errframe := []int{50, 50, 50, 50, 50, 3, 3}
 	fileObj, _ := os.Create(fmt.Sprintf("./data/%v.csv", name))
 	fmt.Fprintln(fileObj, "frame,errframe,errbits,type,snr")
+	var iterCount int64
+	iterCount = 0
 	for i := range noise {
 		log.Printf("%v: %v", name, noise[i])
 		errframecount := 0
@@ -60,6 +69,7 @@ func RunTest(name string, rec int, param ...float64) {
 			}
 			decoder.LoadData(BPSKData, rec, param...)
 			for j := 0; j < 30; j++ {
+				iterCount++
 				decoder.Iterate()
 				BitResult := modem.Demodulate(decoder.GetResult())
 				checkResult := decoder.Check(BitResult)
@@ -81,7 +91,9 @@ func RunTest(name string, rec int, param ...float64) {
 		}
 		fmt.Fprintf(fileObj, "%v,%v,%v,%v,%v\n", framecount, errframecount, errbitscount, name, noise[i])
 	}
-	log.Printf("end: %v", time.Now().UnixNano()/1e6)
+	endTs := time.Now().UnixNano() / 1e6
+	loger.Printf("end: %v", endTs)
+	loger.Printf("iterate for %v times, average %v ms/f", iterCount, (endTs-startTS)/iterCount)
 }
 
 func GetBestAlpha() (float64, error) {

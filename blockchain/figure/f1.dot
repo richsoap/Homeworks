@@ -1,0 +1,21 @@
+graph main {
+    node [shape=ellipse, fontname="KaiTi"];
+    edge [fontname="KaiTi"];
+    main1 [label = "全节点1"]
+    main2 [label = "全节点2"]
+    main3 [label = "全节点3"]
+    main4 [label = "全节点4"]
+    main1 -- main2
+    main2 -- main3
+    main3 -- main4
+    main4 -- main1
+    control [label = "管理轻节点"]
+    user [label = "用户轻节点"]
+    check [label = "查询轻节点"]
+    auth [label = "授权轻节点"]
+    user -- control [label = "申请加入权限"]
+    user -- check [label = "授予查询权限"]
+    check -- main2 [label = "查询用户状态"]
+    auth -- main1 [label = "发布智能合约"]
+    control -- main2 [label = "修改公钥信息"]
+}

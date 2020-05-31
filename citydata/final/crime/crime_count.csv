@@ -1,0 +1,169 @@
+,Month,Crime type,Weight
+0,2018-01,Possession of weapons,237
+1,2018-01,Bicycle theft,256
+2,2018-01,Drugs,354
+3,2018-01,Theft from the person,563
+4,2018-01,Robbery,617
+5,2018-01,Other crime,621
+6,2018-01,Shoplifting,1376
+7,2018-01,Other theft,2070
+8,2018-01,Burglary,2649
+9,2018-01,Vehicle crime,2860
+10,2018-01,Criminal damage and arson,3355
+11,2018-01,Public order,3525
+12,2018-01,Anti-social behaviour,4597
+13,2018-01,Violence and sexual offences,8694
+14,2018-02,Bicycle theft,251
+15,2018-02,Possession of weapons,265
+16,2018-02,Drugs,422
+17,2018-02,Robbery,500
+18,2018-02,Other crime,584
+19,2018-02,Theft from the person,614
+20,2018-02,Shoplifting,1505
+21,2018-02,Other theft,1903
+22,2018-02,Burglary,2316
+23,2018-02,Vehicle crime,2391
+24,2018-02,Criminal damage and arson,2861
+25,2018-02,Public order,3630
+26,2018-02,Anti-social behaviour,4428
+27,2018-02,Violence and sexual offences,7939
+28,2018-03,Bicycle theft,249
+29,2018-03,Possession of weapons,255
+30,2018-03,Drugs,438
+31,2018-03,Theft from the person,669
+32,2018-03,Other crime,701
+33,2018-03,Robbery,735
+34,2018-03,Shoplifting,1589
+35,2018-03,Other theft,2407
+36,2018-03,Vehicle crime,2499
+37,2018-03,Burglary,2566
+38,2018-03,Criminal damage and arson,3198
+39,2018-03,Public order,4060
+40,2018-03,Anti-social behaviour,5144
+41,2018-03,Violence and sexual offences,8924
+42,2018-04,Possession of weapons,308
+43,2018-04,Bicycle theft,312
+44,2018-04,Drugs,404
+45,2018-04,Theft from the person,542
+46,2018-04,Other crime,645
+47,2018-04,Robbery,651
+48,2018-04,Shoplifting,1622
+49,2018-04,Other theft,2071
+50,2018-04,Burglary,2463
+51,2018-04,Vehicle crime,2743
+52,2018-04,Criminal damage and arson,3284
+53,2018-04,Public order,4110
+54,2018-04,Anti-social behaviour,6013
+55,2018-04,Violence and sexual offences,8952
+56,2018-05,Possession of weapons,311
+57,2018-05,Drugs,371
+58,2018-05,Bicycle theft,386
+59,2018-05,Theft from the person,574
+60,2018-05,Robbery,660
+61,2018-05,Other crime,744
+62,2018-05,Shoplifting,1479
+63,2018-05,Other theft,2207
+64,2018-05,Burglary,2534
+65,2018-05,Vehicle crime,2685
+66,2018-05,Criminal damage and arson,3155
+67,2018-05,Public order,4480
+68,2018-05,Anti-social behaviour,6245
+69,2018-05,Violence and sexual offences,9647
+70,2018-06,Possession of weapons,330
+71,2018-06,Bicycle theft,448
+72,2018-06,Drugs,458
+73,2018-06,Theft from the person,517
+74,2018-06,Robbery,572
+75,2018-06,Other crime,783
+76,2018-06,Shoplifting,1452
+77,2018-06,Other theft,2259
+78,2018-06,Burglary,2410
+79,2018-06,Vehicle crime,2562
+80,2018-06,Criminal damage and arson,3045
+81,2018-06,Public order,4329
+82,2018-06,Anti-social behaviour,5567
+83,2018-06,Violence and sexual offences,9654
+84,2018-07,Possession of weapons,347
+85,2018-07,Drugs,417
+86,2018-07,Bicycle theft,455
+87,2018-07,Robbery,612
+88,2018-07,Theft from the person,618
+89,2018-07,Other crime,727
+90,2018-07,Shoplifting,1459
+91,2018-07,Other theft,2290
+92,2018-07,Burglary,2458
+93,2018-07,Vehicle crime,2556
+94,2018-07,Criminal damage and arson,3070
+95,2018-07,Public order,4498
+96,2018-07,Anti-social behaviour,5416
+97,2018-07,Violence and sexual offences,10410
+98,2018-08,Possession of weapons,301
+99,2018-08,Drugs,399
+100,2018-08,Bicycle theft,417
+101,2018-08,Theft from the person,536
+102,2018-08,Robbery,627
+103,2018-08,Other crime,638
+104,2018-08,Shoplifting,1417
+105,2018-08,Other theft,2299
+106,2018-08,Burglary,2476
+107,2018-08,Vehicle crime,2544
+108,2018-08,Criminal damage and arson,2881
+109,2018-08,Public order,3729
+110,2018-08,Anti-social behaviour,5205
+111,2018-08,Violence and sexual offences,8715
+112,2018-09,Possession of weapons,288
+113,2018-09,Bicycle theft,339
+114,2018-09,Drugs,437
+115,2018-09,Theft from the person,476
+116,2018-09,Other crime,625
+117,2018-09,Robbery,634
+118,2018-09,Shoplifting,1329
+119,2018-09,Other theft,2123
+120,2018-09,Burglary,2450
+121,2018-09,Vehicle crime,2596
+122,2018-09,Criminal damage and arson,2700
+123,2018-09,Public order,3569
+124,2018-09,Anti-social behaviour,4814
+125,2018-09,Violence and sexual offences,8576
+126,2018-10,Possession of weapons,249
+127,2018-10,Drugs,408
+128,2018-10,Bicycle theft,411
+129,2018-10,Robbery,676
+130,2018-10,Other crime,706
+131,2018-10,Theft from the person,716
+132,2018-10,Shoplifting,1454
+133,2018-10,Other theft,2257
+134,2018-10,Burglary,2582
+135,2018-10,Vehicle crime,2833
+136,2018-10,Criminal damage and arson,2918
+137,2018-10,Public order,3549
+138,2018-10,Anti-social behaviour,5203
+139,2018-10,Violence and sexual offences,8876
+140,2018-11,Possession of weapons,348
+141,2018-11,Bicycle theft,358
+142,2018-11,Drugs,437
+143,2018-11,Other crime,593
+144,2018-11,Robbery,698
+145,2018-11,Theft from the person,779
+146,2018-11,Shoplifting,1439
+147,2018-11,Other theft,2300
+148,2018-11,Burglary,2701
+149,2018-11,Vehicle crime,2776
+150,2018-11,Criminal damage and arson,2962
+151,2018-11,Public order,3404
+152,2018-11,Anti-social behaviour,4940
+153,2018-11,Violence and sexual offences,8937
+154,2018-12,Bicycle theft,211
+155,2018-12,Possession of weapons,247
+156,2018-12,Drugs,485
+157,2018-12,Other crime,568
+158,2018-12,Robbery,604
+159,2018-12,Theft from the person,753
+160,2018-12,Shoplifting,1273
+161,2018-12,Other theft,2252
+162,2018-12,Burglary,2593
+163,2018-12,Criminal damage and arson,2689
+164,2018-12,Vehicle crime,2800
+165,2018-12,Public order,2887
+166,2018-12,Anti-social behaviour,4304
+167,2018-12,Violence and sexual offences,8711
