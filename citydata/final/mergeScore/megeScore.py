@@ -2,17 +2,33 @@ import pandas as pd
 import numpy as np
 import math
 
+schoolPosition = {'Longitude':-2.233771, 'Latitude':53.46679}
 
-DistanceUnit = 6371**2
+rc = 6378.137
+rj = 6356.725
+
+def ToRad(deg):
+  return deg * math.pi / 180
+
+def GetR(lat):
+  return rj + (rc - rj) * (90-lat) / 90
+
+def One2OneDistanceSquare(a, b):
+  degree = a['Latitude']
+  r = GetR(degree)
+  sr = r * math.cos(ToRad(degree))
+
+  deltaLatitude = ToRad(a['Latitude'] - b['Latitude']) 
+  deltaLongitude = ToRad(a['Longitude'] - b['Longitude']) 
+  return (deltaLatitude * r)**2 + (deltaLongitude * sr)**2
+
+def One2OneDistance(a, b):
+  return math.sqrt(One2OneDistanceSquare(a, b))
+
 def OneDistanceSqure(point, targetsdf):
   result = np.zeros(len(targetsdf))
   for index, row in targetsdf.iterrows():
-    degree = point['Latitude']
-    radians = degree * math.pi / 180
-    deltaLatitude = (point['Latitude'] - row['Latitude']) * math.pi / 180
-    deltaLongitude = (point['Longitude'] - row['Longitude']) * math.pi / 180
-    result[index] = deltaLatitude**2 + (deltaLongitude*math.cos(radians))**2
-  result = result * DistanceUnit
+    result[index] = One2OneDistanceSquare(point, row)
   return result
 
 def OneDistance(point, targets):
@@ -28,7 +44,10 @@ def LoadScore(crime, key):
 def GetCrimeScore(airbnb, crime):
   print('build radis data')
   result = np.zeros(len(airbnb))
+  areas = np.zeros(len(airbnb))
+  minindexs = [0]*len(airbnb)
   score = LoadScore(crime, 'score_0')
+  area = LoadScore(crime, 'area')
   meanscore = np.mean(score)
   k = 50/meanscore
   print('load score data')
@@ -39,23 +58,52 @@ def GetCrimeScore(airbnb, crime):
     minindex = distance == np.min(distance)
     values = score[minindex] * k
     result[index] = np.sum(values)
-  return result
+    areas[index] = area[index]
+    for i in range(len(minindex)):
+      if minindex[i]:
+        minindexs[index] = i
+        break
+  return result, areas, minindexs
+
+def CommuteScoreFunc(distance):
+  if distance < 0.1:
+    return 100
+  elif distance < 0.4:
+    return 80
+  elif distance < 1:
+    return 70
+  elif distance < 3:
+    return 50
+  else:
+    return 50 * 9 / (distance**2)
+
+def GetCommuteScore(airbnb, school):
+  result = np.zeros(len(airbnb))
+  distance = [0]*len(airbnb)
+  for index, row in airbnb.iterrows():
+    distance[index] = One2OneDistance(row, school)
+    result[index] = CommuteScoreFunc(distance[index])
+  return result, distance
 
 def GetBusDistance(airbnb, bus):
   result = np.zeros(len(airbnb))
+  tempdf = []
   for index, row in airbnb.iterrows():
     if index % 10 == 0:
       print("{}/{}".format(index, len(airbnb)))
     distance = OneDistance(row, bus)
     result[index] = np.min(distance)
+    row['bus distance'] = result[index]
+    tempdf.append(row)
+  pd.DataFrame(tempdf).to_csv("distance.csv")
   return result
 
 def GetBusScore(airbnb, bus):
   distance = GetBusDistance(airbnb, bus)
   #print(distance)
-  allScore = 100*(0.1)/distance
-  allScore[allScore>100] = 100
-  return allScore
+  allScore = 50*(0.1)/distance
+  allScore[allScore>=50] = 50
+  return allScore, distance
 
 def GetRoomScore(airbnb):
   result = np.zeros(len(airbnb))
@@ -63,14 +111,14 @@ def GetRoomScore(airbnb):
     result[index] = row['bed_score'] * 100
   return result
 
-def GerPrice(airbnb):
-  result = np.zeros(len(airbnb))
+def GetPrice(airbnb):
+  result = [0]*len(airbnb)
   for index, row in airbnb.iterrows():
     result[index] = row['price']
   return result
 
 def GetPriceScore(airbnb):
-  price = GerPrice(airbnb)
+  price = GetPrice(airbnb)
   #print('price {}'.format(price))
   delta = np.max(price) - np.min(price)
   #print('delta {}'.format(delta))
@@ -81,6 +129,32 @@ def GetPriceScore(airbnb):
   score = 1 - score
   return score * 100
 
+def GetPriceBonus(airbnb, minindexs):
+  pricesCount = {}
+  prices = GetPrice(airbnb)
+  for index in range(len(prices)):
+    minIndex = minindexs[index]
+    if minIndex not in pricesCount:
+      pricesCount [minIndex] = [0,0]
+    pricesCount[minIndex][0] += prices[index]
+    pricesCount[minIndex][1] += 1
+  
+  for key in pricesCount:
+    pricesCount[key][0] /= pricesCount[key][1]
+
+  result = [0]*len(prices)
+  average = [0]*len(prices)
+
+  for index,row in airbnb.iterrows():
+    minIndex = minindexs[index]
+    average[index] = pricesCount[minIndex][0]
+    price = prices[index]
+    if price > average[index]:
+      result[index] = max(30 - (price - average[index]), 0)
+    else:
+      result[index] = min(30 + (average[index] - price), 50)
+  return result, average
+
 def GetRating(airbnb):
   rating = np.zeros(len(airbnb))
   for index, row in airbnb.iterrows():
@@ -88,7 +162,7 @@ def GetRating(airbnb):
   return rating
 
 def GetSelfScore(airbnb, bus):
-  busScore = GetBusScore(airbnbData, busData)
+  busScore = GetBusScore(airbnb, bus)
   print('load bus score')
   rating = np.zeros(len(airbnb))
   bed = np.zeros(len(airbnb))
@@ -110,27 +184,59 @@ def MergeScore(airbnb, scores):
 
 print("start")
 airbnbData = pd.read_csv("airbnb.csv")
+#airbnbData = pd.read_csv("airbnb_short.csv")
+
 crimeData = pd.read_csv("crime.csv")
 busData = pd.read_csv("bus.csv")
 
 scoreDict = {}
 print('load data')
-crimeScore = GetCrimeScore(airbnbData, crimeData)
+
+crimeScoreData = pd.read_csv('crimescore.csv')
+crimeScore = crimeScoreData['crime']
+areaScore = crimeScoreData['area']
+minindexs = crimeScoreData['minindexs']
+
+#crimeScore, areaScore, minindexs = GetCrimeScore(airbnbData, crimeData)
 scoreDict['crime'] = crimeScore
+scoreDict['area'] = areaScore
+scoreDict['minindexs'] = minindexs
+
 print("crime score: {}".format(len(crimeScore)))
-busScore = GetBusScore(airbnbData, busData)
+df = pd.DataFrame(scoreDict)
+df.to_csv("crimescore.csv")
+
+
+commuteScore, distance = GetCommuteScore(airbnbData, schoolPosition)
+scoreDict['commute'] = commuteScore
+scoreDict['commute distance'] = distance
+print('commute score: {}'.format(len(commuteScore)))
+
+busScore, distance = GetBusScore(airbnbData, busData)
 scoreDict['bus'] = busScore
-print("bus score: {}".format(len(busScore)))
+scoreDict['bus distance'] = distance
+print("bus bonus: {}".format(len(busScore)))
+
 roomScore = GetRoomScore(airbnbData)
 scoreDict['room'] = roomScore
 print('room score: {}'.format(len(roomScore)))
+
 priceScore = GetPriceScore(airbnbData)
-scoreDict['price'] = priceScore
+scoreDict['price score'] = priceScore
 print('price score: {}'.format(len(priceScore)))
+
+priceBonus, average = GetPriceBonus(airbnbData, minindexs)
+scoreDict['price bonus'] = priceBonus
+scoreDict['average'] = average
+print('price bonus: {}'.format(len(priceBonus)))
+
 rating = GetRating(airbnbData)
 scoreDict['rating'] = rating
 print('rating: {}'.format(len(rating)))
-totalScore = rating * (busScore + roomScore + priceScore - crimeScore) / 100
+
+totalScore = rating * (commuteScore + priceBonus + busScore + roomScore + priceScore - crimeScore) / 100
+#totalScore = rating * (commuteScore + priceBonus + roomScore + priceScore - crimeScore) / 100
+
 totalScore[totalScore < 0] = 0
 scoreDict['total'] = totalScore
 print('total score: {}'.format(len(totalScore)))
